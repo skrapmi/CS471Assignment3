@@ -1,4 +1,5 @@
 # CS471Assignment3
+
 Team Members: 
   Timothy Parks - parkstimothyj@csu.fullerton.edu
   Chary Vielma  - chary.vielma@csu.fullerton.edu
