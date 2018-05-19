@@ -15,4 +15,4 @@ If pyconfig.h error please link pyconfig.h to gcc:
 
 Compile Segment consists of for now:
 
-* g++ <program_name.cpp> -o <output_file_name> -std=c++11 -lboost_python -lpython2.7
+* g++ <program_name.cpp> -o <output_file_name> -std=c++11 -lboost_python -lpython2.7 -lboost_system -lboost_thread -lpthread
