@@ -12,3 +12,7 @@ If pyconfig.h error please link pyconfig.h to gcc:
 * Aleternatively appending -I /usr/include/python2.7/ should fix it.
 * In addition (this is the method i use) you can add the directory to your path with:
   * export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/python2.7/"
+
+Compile Segment consists of for now:
+
+* g++ <program_name.cpp> -o <output_file_name> -std=c++11 -lboost_python -lpython2.7
