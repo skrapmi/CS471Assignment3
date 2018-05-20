@@ -7,7 +7,7 @@
 import socket
 import os
 import sys
-import thread
+import threading
 
 # Command line checks 
 #if len(sys.argv) < 2 or type(sys.argv[1]) != int:
@@ -23,8 +23,28 @@ serverPort = sys.argv[2]
 # Create a TCP socket
 connSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+clientReturnPort = 0
+
 # Connect to the server
 #connSock.connect((serverAddr, serverPort)) 
+
+def parse(stuff)
+    
+
+
+def recvAll(sock, numBytes):
+
+    recvBuff = ""
+    tmpBuff  = ""
+    while len(recvBuff) < numBytes:
+
+        tmpBuff = sock.recv(numBytes)
+        if not tmpBuff:
+            break
+
+        recvBuff += tmpBuff
+
+    return recvBuff
 
 def getFile(fileName):
     # Connect to the server
@@ -77,7 +97,7 @@ def putFile(fileName):
         while len(fileData) > numSent:
             numSent += connSock.send(fileData[numSent:])
 
-    print "Sent ", numSent, " bytes."
+    print("Sent ", numSent, " bytes.")
 
     # Close the socket and the file
     connSock.close()
@@ -94,14 +114,44 @@ def ls():
 
 def lls():
     for line in commands.getstatusoutput('ls -l'):
-        print line    
+        print(line)
 
 def exiting():
     pass
 
+def clientListener():
+    global clientReturnPort    
+    returnSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    returnSock.bind(('', 0))
+    clientReturnPort = returnSock.getsockname()[1]
+
+    while True:
+        returnSock.listen(1)
+        print('listening to port ', clientReturnPort)
+
+        clientSock, addr = returnSock.accept()
+
+        fileData = ""
+        recvBuff = ""
+        fileSize = 0
+        fileSizeBuff = ""
+
+        fileName = recvAll(clientSock, 10)  
+        fileName, junk = fileName.split(",")
+        fileSize = int(recvAll(clientSock, 10))
+        fileData = recAll(clientSock, fileSize)
+
+        fileObj = open(fileName, "w+")
+        fileObj.write(fileData[:fileSize])
+        fileObj.close()
+        returnSock.close()
+    delay(10)
+
+t1 = threading.Thread(target = clientListener)
+t1.start()
 cont = True
 while cont:
-    response =  raw_input("ftp> ")
+    response =  input("ftp> ")
     input_list = response.split()
 
     if (input_list[0] == 'get'):
@@ -121,47 +171,6 @@ while cont:
         cont = False
 
     else:
-        print "Invalid command"
-
-def serverStart():
-    returnPort = 3456
-    returnSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    returnSock.bind(('', returnPort))
-
-    while True:
-	returnSock.listen(1)
-	
-	clientSock, addr = returnSock.accept()
-
-	fileData = ""
-	recvBuff = ""
-	fileSize = 0
-	fileSizeBuff = ""
-
-	fileSize = int(recvAll(clientSock, 10))
-	fileName = returnedFile.txt
-	fileObj = open(fileName, "w+")
-	fileData = recAll(clientSock, fileSize)
-	fileObj.write(fileData[:fileSize])
-	fileObj.close()
-	returnSock.close()
-	delay(10)
+        print("Invalid command")
 
 
-def recvAll(sock, numBytes):
-
-    recvBuff = ""
-    tmpBuff  = ""
-    while len(recvBuff) < numBytes:
-
-	tmpBuff = sock.recv(numBytes)
-	if not tmpBuff:
-	    break
-
-	recvBuff += tmpBuff
-
-    return recvBuff
-
-
-t1 = Thread(target = serverStart)
-t1.start()
