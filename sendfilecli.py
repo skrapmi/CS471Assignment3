@@ -7,6 +7,7 @@
 import socket
 import os
 import sys
+import thread
 
 # Command line checks 
 #if len(sys.argv) < 2 or type(sys.argv[1]) != int:
@@ -121,3 +122,46 @@ while cont:
 
     else:
         print "Invalid command"
+
+def serverStart():
+    returnPort = 3456
+    returnSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    returnSock.bind(('', returnPort))
+
+    while True:
+	returnSock.listen(1)
+	
+	clientSock, addr = returnSock.accept()
+
+	fileData = ""
+	recvBuff = ""
+	fileSize = 0
+	fileSizeBuff = ""
+
+	fileSize = int(recvAll(clientSock, 10))
+	fileName = returnedFile.txt
+	fileObj = open(fileName, "w+")
+	fileData = recAll(clientSock, fileSize)
+	fileObj.write(fileData[:fileSize])
+	fileObj.close()
+	returnSock.close()
+	delay(10)
+
+
+def recvAll(sock, numBytes):
+
+    recvBuff = ""
+    tmpBuff  = ""
+    while len(recvBuff) < numBytes:
+
+	tmpBuff = sock.recv(numBytes)
+	if not tmpBuff:
+	    break
+
+	recvBuff += tmpBuff
+
+    return recvBuff
+
+
+t1 = Thread(target = serverStart)
+t1.start()
