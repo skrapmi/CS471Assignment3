@@ -2,6 +2,7 @@ Required libraries to compile the project:
 
 * Boost library
 * Python Library
+* Pyftpdlib Library
 
 If pyconfig.h error please link pyconfig.h to gcc:
 
@@ -16,3 +17,7 @@ If pyconfig.h error please link pyconfig.h to gcc:
 Compile Segment consists of for now:
 
 * g++ <program_name.cpp> -o <output_file_name> -std=c++11 -lboost_python -lpython2.7 -lboost_system -lboost_thread -lpthread
+* g++ FTP_server_embedded.cpp -o ftp_server -std=c++11 -lboost_python -lpython2.7 -lboost_system -lboost_thread -lpthread
+* g++ FTP_client_embedded.cpp -o ftp_client -std=c++11 -lboost_python -lpython2.7 -lboost_system -lboost_thread -lpthread
+
+To run each program you must be calling sudo ./<file_name_to_run>
