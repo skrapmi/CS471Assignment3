@@ -36,10 +36,7 @@ int main (int argc, char ** argv)
 		ignored = exec("handler.authorizer = authorizer", main_namespace);
 		ignored = exec("logging.basicConfig(filename='/var/log/pyftpd.log', level=logging.INFO)", main_namespace);
 		ignored = exec("server = FTPServer(('', 2121), handler)", main_namespace);
-		ignored = exec ("server.serve_forever()", main_namespace);
-
-		//int five_squared = extract<int>(main_namespace["result"]);
-		//cout << five_squared << endl;
+		ignored = exec("server.serve_forever()", main_namespace);
 		
 	}
 	catch(error_already_set)
